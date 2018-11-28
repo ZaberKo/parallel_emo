@@ -9,9 +9,13 @@ from pop_pool import PopPool
 
 def run(dataset, pipe):
     ga = GA(dataset)
+
+    #init part
     ga.init_run()
     pipe.send(ga.pop)
-    pipe.recv()
+    pipe.recv() # wait for a signal. TODO: need auth?
+
+    # main part
     while True:
         terminate_flag = ga.run()
         if terminate_flag:
@@ -67,6 +71,11 @@ if __name__ == '__main__':
 
     popPool.init_pool(pops)
 
+    # send run main signal
+    for conn in pipe_conns:
+        conn.send('Run Main')
+
+    #run main part
     for lisen_thread in lisen_threads:
         lisen_thread.start()
 
