@@ -71,13 +71,15 @@ if __name__ == '__main__':
 
     popPool.init_pool(pops)
 
-    # send run main signal
-    for conn in pipe_conns:
-        conn.send('Run Main')
+
 
     #run main part
     for lisen_thread in lisen_threads:
         lisen_thread.start()
+
+    # send run main signal
+    for conn in pipe_conns:
+        conn.send('Run Main')
 
     for lisen_thread in lisen_threads:
         lisen_thread.join()
